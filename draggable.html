@@ -1,0 +1,401 @@
+<head>
+  <meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.7.28">
+  <title>Draggable Windows</title>
+  <script src="js/hkInclude.js"></script>
+  <link rel="stylesheet" href="css/github.css">
+  <script src="js/highlight.pack.js"></script>
+  <script>
+  hljs.initHighlightingOnLoad();
+  </script>
+  <style>
+  /* a container class to handle drag events */
+  .draggable {
+     position: absolute;
+     right: 10px;
+  }
+  /* a titlebar class to move a parent around with it */
+  .titlebar {
+     cursor: move;
+     padding: 10px;
+     background-color: #2196F3;
+     color: #fff;
+     font-weight: bold;
+  }
+  /* a drag class to move elements without a titlebar */
+  .drag {
+      cursor: move;
+  }
+  </style>
+  <style>
+  .white {
+     background-color: #f1f1f1;
+     text-align: center;
+     border: 1px solid #888;
+     position: relative;
+  }
+  .white:hover {
+     box-shadow: 5px 10px 8px #222;
+  }
+  code {
+     margin: auto;
+     float: left;
+     border: 1px solid black;
+  }
+  body{
+     background: #846942;
+  }
+  </style>
+</head>
+<body>
+  <h1>Draggable Windows</h1>
+  
+  <p>This tutorial walks through creating a page
+  with dragable windows and other mobile elements.</p>
+
+  <p>Although there are other drag and move scripts out there, this
+  one is easy to use, versatile, well-organized, and compact. It
+  works with mice, touch screens, and tablets. It supports multiple
+  elements or div windows on a page. Elements may be configured
+  via CSS to be enabled for moving/dragging around either
+  via a title bar, or by clicking on the body of the element.
+  That's important because some objects contain interactive
+  elements that dragging might interfere with. We also added events
+  to the elements so we can trigger things, such as drop shadows
+  appearing under them while they move.</p>
+
+  <p>This script is part of our Kickass javascript framework.
+  We are releasing the framework as separate, modular,
+  components like this one. Use only what is necessary for
+  faster page loads, simplicity, and convenience.
+  Download updated modules from GitHub.</p>
+
+  <div class="draggable">
+     
+    <div id="mydiv" class="white">
+      <div class="titlebar">
+        Drag this title bar.
+      </div>
+      <p>This div is only</p>
+      <p>dragable via</p>
+      <p>the title bar.</p>
+    </div>
+    
+    <div class="white drag">
+      <p>Drag this separately.</p>
+    </div>
+    
+    <div style="border-radius: 50%" class="white drag">
+       <p>Oval</p>
+    </div>
+    
+  </div>
+  <h2>CSS Classes</h2>
+  
+  <p>First let's define some CSS classes to identify which elements
+  can move. We define three classes, a <b>draggable</b> class, a
+  <b>titlebar</b> class, and a separate <b>drag</b>
+  class.</p>
+
+  <script id="dragElements">
+  /* Draggable Elements: Drag and dragElements elements with mouse or gestures */
+  //Adapted to optionally work with titlebars.
+  //References: 
+     //www.w3schools.com/howto/tryit.asp?filename=tryhow_js_draggable
+     //www.kirupa.com/html5/drag.htm
+     //www.kirupa.com/html5/examples/drag_multiple.htm
+  function dragElements(e){
+    var container = document.querySelector(e);
+    var activeItem = null, ca = container.addEventListener;
+    
+    ca("touchstart", dragStart, false);
+    ca("touchend", dragEnd, false);
+    ca("touchmove", drag, false);
+
+    ca("mousedown", dragStart, false);
+    ca("mouseup", dragEnd, false);
+    ca("mousemove", drag, false);
+    
+    //create some events
+    var startmove = new CustomEvent('startmove');
+    var moving = new CustomEvent('moving');
+    var stopmove = new CustomEvent('stopmove');
+
+    function dragStart(e) {
+      var et = e.target;
+      //activeItem is either a parent of a titlebar, or drag
+      if (et.classList.contains("titlebar")){ et = et.parentElement; }
+      else {//find something to drag
+         while (!et.classList.contains("drag")){
+            //if nothing is drag, we're done here
+            if (!et.parentElement || et === container) return;
+            et = et.parentElement; //keep looking
+         }
+      } activeItem = et;
+      
+      //move on top of other elements
+      for (i = container.children.length; i--;)
+         container.children[i].style.zIndex="";
+      activeItem.style.zIndex="1";
+
+       if (!activeItem.xOffset) { activeItem.xOffset = 0; }
+       if (!activeItem.yOffset) { activeItem.yOffset = 0; }
+      
+       if (e.type === "touchstart") {
+         activeItem.initialX = e.touches[0].clientX - activeItem.xOffset;
+         activeItem.initialY = e.touches[0].clientY - activeItem.yOffset;
+       } else {
+         //console.log("Dragging", e.etet.tagName);
+         activeItem.initialX = e.clientX - activeItem.xOffset;
+         activeItem.initialY = e.clientY - activeItem.yOffset;
+       }
+        activeItem.dispatchEvent(startmove);
+    }
+
+    function dragEnd(e) {
+      if (activeItem) {
+        activeItem.initialX = activeItem.currentX;
+        activeItem.initialY = activeItem.currentY;
+        activeItem.dispatchEvent(stopmove);
+      }
+      activeItem = null;
+    }
+
+    function drag(e) {
+      if (activeItem) {
+        if (e.type === "touchmove") {
+          e.preventDefault();
+          activeItem.currentX = e.touches[0].clientX - activeItem.initialX;
+          activeItem.currentY = e.touches[0].clientY - activeItem.initialY;
+        } else {
+          activeItem.currentX = e.clientX - activeItem.initialX;
+          activeItem.currentY = e.clientY - activeItem.initialY;
+        }
+        activeItem.xOffset = activeItem.currentX;
+        activeItem.yOffset = activeItem.currentY;
+        setTranslate(activeItem.currentX, activeItem.currentY, activeItem);
+        activeItem.dispatchEvent(moving);
+      }
+    }
+
+    function setTranslate(xPos, yPos, el) {
+      el.style.transform = "translate(" + xPos + "px, " + yPos + "px)";
+    }
+  }
+  window.addEventListener('load', dragElements(".draggable"));
+  </script> 
+  <script>
+
+  function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  document.write("<pre><code>&lt;html&gt;&lt;head&gt;\n&lt;style&gt;",
+   htmlEntities(document.querySelector("style").innerText), "\n&lt;/style&gt;&lt;/head&gt;&lt;body&gt;</code></pre>");
+  </script><pre><code class=" hljs xml"><span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">style</span>&gt;</span><span class="css">
+  <span class="hljs-comment">/* a container class to handle drag events */</span>
+  <span class="hljs-class">.draggable</span> <span class="hljs-rules">{
+     <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+     <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">10</span>px</span></span>;
+  <span class="hljs-rule">}</span></span>
+  <span class="hljs-comment">/* a titlebar class to move a parent around with it */</span>
+  <span class="hljs-class">.titlebar</span> <span class="hljs-rules">{
+     <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> move</span></span>;
+     <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">10</span>px</span></span>;
+     <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#2196F3</span></span></span>;
+     <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#fff</span></span></span>;
+     <span class="hljs-rule"><span class="hljs-attribute">font-weight</span>:<span class="hljs-value"> bold</span></span>;
+  <span class="hljs-rule">}</span></span>
+  <span class="hljs-comment">/* a drag class to move elements without a titlebar */</span>
+  <span class="hljs-class">.drag</span> <span class="hljs-rules">{
+      <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> move</span></span>;
+  <span class="hljs-rule">}</span></span>
+  
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span></code></pre><noscript>View the page source to see how to create the
+  CSS styles.</noscript>
+  <h2 style="clear:both">Draggable Elements</h2>
+  
+  <p>Create an element such as a <b>div</b> and assign a
+  <b>class="draggable"</b> to it. This serves as
+  a container to receive drag and move events. Place all draggable
+  elements inside it. They do not have to stay inside it (They can use
+  absolute positioning). Here, we define two dragable elements. One of
+  them can be draggable via a <b>titlebar</b>. The other one below it
+  does not need a titlebar because it has a <b>drag</b> class.</p>
+
+  <script>
+   var t = htmlEntities(document.querySelector("div.draggable").outerHTML);
+   document.write("<pre><code class=html>  ",
+   t, "\n</code></pre>");
+  </script><pre><code class="html hljs ">  <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"draggable"</span>&gt;</span>
+     
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"mydiv"</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"white"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"titlebar"</span>&gt;</span>
+        Drag this title bar.
+      <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>This div is only<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>dragable via<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>the title bar.<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"white drag"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>Drag this separately.<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">"border-radius: 50%"</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"white drag"</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>Oval<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    
+  <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+</code></pre>
+  <h2 style="clear:both">JavaScript</h2>
+  
+  <p>Here is the javascript to move things around.</p>
+
+  <script>
+   document.write("<pre><code>&lt;script&gt;",
+   htmlEntities(document.querySelector("script#dragElements").innerText), "\n&lt;/script&gt;</code></pre>");
+  </script><pre><code class=" hljs xml"><span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-comment">/* Draggable Elements: Drag and dragElements elements with mouse or gestures */</span>
+  <span class="hljs-comment">//Adapted to optionally work with titlebars.</span>
+  <span class="hljs-comment">//References: </span>
+     <span class="hljs-comment">//www.w3schools.com/howto/tryit.asp?filename=tryhow_js_draggable</span>
+     <span class="hljs-comment">//www.kirupa.com/html5/drag.htm</span>
+     <span class="hljs-comment">//www.kirupa.com/html5/examples/drag_multiple.htm</span>
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">dragElements</span><span class="hljs-params">(e)</span>{</span>
+    <span class="hljs-keyword">var</span> container = document.querySelector(e);
+    <span class="hljs-keyword">var</span> activeItem = <span class="hljs-literal">null</span>, ca = container.addEventListener;
+    
+    ca(<span class="hljs-string">"touchstart"</span>, dragStart, <span class="hljs-literal">false</span>);
+    ca(<span class="hljs-string">"touchend"</span>, dragEnd, <span class="hljs-literal">false</span>);
+    ca(<span class="hljs-string">"touchmove"</span>, drag, <span class="hljs-literal">false</span>);
+
+    ca(<span class="hljs-string">"mousedown"</span>, dragStart, <span class="hljs-literal">false</span>);
+    ca(<span class="hljs-string">"mouseup"</span>, dragEnd, <span class="hljs-literal">false</span>);
+    ca(<span class="hljs-string">"mousemove"</span>, drag, <span class="hljs-literal">false</span>);
+    
+    <span class="hljs-comment">//create some events</span>
+    <span class="hljs-keyword">var</span> startmove = <span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">'startmove'</span>);
+    <span class="hljs-keyword">var</span> moving = <span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">'moving'</span>);
+    <span class="hljs-keyword">var</span> stopmove = <span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">'stopmove'</span>);
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">dragStart</span><span class="hljs-params">(e)</span> {</span>
+      <span class="hljs-keyword">var</span> et = e.target;
+      <span class="hljs-comment">//activeItem is either a parent of a titlebar, or drag</span>
+      <span class="hljs-keyword">if</span> (et.classList.contains(<span class="hljs-string">"titlebar"</span>)){ et = et.parentElement; }
+      <span class="hljs-keyword">else</span> {<span class="hljs-comment">//find something to drag</span>
+         <span class="hljs-keyword">while</span> (!et.classList.contains(<span class="hljs-string">"drag"</span>)){
+            <span class="hljs-comment">//if nothing is drag, we're done here</span>
+            <span class="hljs-keyword">if</span> (!et.parentElement || et === container) <span class="hljs-keyword">return</span>;
+            et = et.parentElement; <span class="hljs-comment">//keep looking</span>
+         }
+      } activeItem = et;
+      
+      <span class="hljs-comment">//move on top of other elements</span>
+      <span class="hljs-keyword">for</span> (i = container.children.length; i--;)
+         container.children[i].style.zIndex=<span class="hljs-string">""</span>;
+      activeItem.style.zIndex=<span class="hljs-string">"1"</span>;
+
+       <span class="hljs-keyword">if</span> (!activeItem.xOffset) { activeItem.xOffset = <span class="hljs-number">0</span>; }
+       <span class="hljs-keyword">if</span> (!activeItem.yOffset) { activeItem.yOffset = <span class="hljs-number">0</span>; }
+      
+       <span class="hljs-keyword">if</span> (e.type === <span class="hljs-string">"touchstart"</span>) {
+         activeItem.initialX = e.touches[<span class="hljs-number">0</span>].clientX - activeItem.xOffset;
+         activeItem.initialY = e.touches[<span class="hljs-number">0</span>].clientY - activeItem.yOffset;
+       } <span class="hljs-keyword">else</span> {
+         <span class="hljs-comment">//console.log("Dragging", e.etet.tagName);</span>
+         activeItem.initialX = e.clientX - activeItem.xOffset;
+         activeItem.initialY = e.clientY - activeItem.yOffset;
+       }
+        activeItem.dispatchEvent(startmove);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">dragEnd</span><span class="hljs-params">(e)</span> {</span>
+      <span class="hljs-keyword">if</span> (activeItem) {
+        activeItem.initialX = activeItem.currentX;
+        activeItem.initialY = activeItem.currentY;
+        activeItem.dispatchEvent(stopmove);
+      }
+      activeItem = <span class="hljs-literal">null</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">drag</span><span class="hljs-params">(e)</span> {</span>
+      <span class="hljs-keyword">if</span> (activeItem) {
+        <span class="hljs-keyword">if</span> (e.type === <span class="hljs-string">"touchmove"</span>) {
+          e.preventDefault();
+          activeItem.currentX = e.touches[<span class="hljs-number">0</span>].clientX - activeItem.initialX;
+          activeItem.currentY = e.touches[<span class="hljs-number">0</span>].clientY - activeItem.initialY;
+        } <span class="hljs-keyword">else</span> {
+          activeItem.currentX = e.clientX - activeItem.initialX;
+          activeItem.currentY = e.clientY - activeItem.initialY;
+        }
+        activeItem.xOffset = activeItem.currentX;
+        activeItem.yOffset = activeItem.currentY;
+        setTranslate(activeItem.currentX, activeItem.currentY, activeItem);
+        activeItem.dispatchEvent(moving);
+      }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setTranslate</span><span class="hljs-params">(xPos, yPos, el)</span> {</span>
+      el.style.transform = <span class="hljs-string">"translate("</span> + xPos + <span class="hljs-string">"px, "</span> + yPos + <span class="hljs-string">"px)"</span>;
+    }
+  }
+  window.addEventListener(<span class="hljs-string">'load'</span>, dragElements(<span class="hljs-string">".draggable"</span>));
+  
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></code></pre>
+  <p style="clear:both"><br>
+  We don't have to paste the code onto a page below other elements
+  like this. We could have loaded <b>dragElements.js</b> from a
+  <b>&lt;script&gt;</b> tag:<br>&lt;script 
+  src="js/dragElements.js"&gt;&lt;/script&gt;</p>
+ 
+  <h2>Custom events.</h2>
+  
+  <p>The above script adds three custom events,
+  <b>startmove</b>, <b>moving</b>, and <b>stopmove</b>. Let's add
+  listeners to these events so that when we move them they look
+  orange. We could do other things such as get their positions
+  when they are set down for something like a chess game.</p>
+
+  <script id="shadows">
+   var divs = document.querySelectorAll(".white");
+   divs[0].addEventListener("startmove",
+      e=>e.target.style.background="orange");
+   divs[1].addEventListener("startmove",
+      e=>e.target.style.background="orange");
+   var divs = document.querySelectorAll(".white");
+   divs[0].addEventListener("stopmove",
+      e=>e.target.style.background="white");
+   divs[1].addEventListener("stopmove",
+      e=>e.target.style.background="white");
+  </script> 
+  <script>
+
+   document.write("<pre><code>&lt;script&gt;\n",
+   htmlEntities(document.querySelector("script#shadows").innerText), "\n&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</code></pre>");
+  </script><pre><code class=" hljs xml"><span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+
+   <span class="hljs-keyword">var</span> divs = document.querySelectorAll(<span class="hljs-string">".white"</span>);
+   divs[<span class="hljs-number">0</span>].addEventListener(<span class="hljs-string">"startmove"</span>,
+      e=&gt;e.target.style.background=<span class="hljs-string">"orange"</span>);
+   divs[<span class="hljs-number">1</span>].addEventListener(<span class="hljs-string">"startmove"</span>,
+      e=&gt;e.target.style.background=<span class="hljs-string">"orange"</span>);
+   <span class="hljs-keyword">var</span> divs = document.querySelectorAll(<span class="hljs-string">".white"</span>);
+   divs[<span class="hljs-number">0</span>].addEventListener(<span class="hljs-string">"stopmove"</span>,
+      e=&gt;e.target.style.background=<span class="hljs-string">"white"</span>);
+   divs[<span class="hljs-number">1</span>].addEventListener(<span class="hljs-string">"stopmove"</span>,
+      e=&gt;e.target.style.background=<span class="hljs-string">"white"</span>);
+  
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+  <h2 style="clear:both">Wrapping Up</h2>
+  
+  <p>Well, that's it. We defined CSS classes for dragable objects, one
+  that moves with a titlebar, and one that doesn't. We created
+  a page to display them. We defined elements that can move with the
+  mouse or with tablet and phone gestures. Then we added events to
+  the dragable elements to color them as they move.
+  If this tutorial was helpful, please subcribe for more updates.</p>
+
+
+
+
+</body>
