@@ -6,7 +6,7 @@ leverage the power of modern browsers. The goal for each
 component is to "do one thing and do it well." Include 
 only what you need.
 
-##Windows-like Components (growing list).
+## Windows-like Components (growing list).
 
 These components allow forms, web apps or "widgets" to 
 behave like windows inside the web page. 
