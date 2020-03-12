@@ -9,11 +9,14 @@ only what you need.
 ## Windows-like Components
 
 These components allow forms, web apps or "widgets" to 
-behave like windows inside the web page. 
+behave like miniature desktop windows inside the web 
+page. They give users improved control over content, so 
+they can reposition forms when using different-sized 
+on-screen keyboards, for example.
 
- * Window Decorator  - fancy borders (todo)
- * Draggable Windows - make widgets movable, draggable
- * Maximize/Minimize - minimize widgets (todo)
+ * Decorator  - fancy borders (todo)
+ * Draggable - make elements movable, draggable
+ * Minimize - minimize widgets (todo)
  
 Each component comes with an HTML tutorial walking 
 through each step to effectively deploy it on a web 
