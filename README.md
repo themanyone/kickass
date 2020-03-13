@@ -1,6 +1,6 @@
 # kickass
 
-A simple, modular and minimal .js framework consisting 
+A simple, modular, and minimal .js framework consisting 
 of optional components rewritten from scratch to 
 leverage the power of modern browsers. The goal for each 
 component is to "do one thing and do it well." Include 
