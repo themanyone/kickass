@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html><head><title>Clickable Icons</title>
+<!--
+// Copyright (C) 2020 by Henry Kroll, thenerdshow.com
+/* Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+   http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License. */ //-->
+<!-- why crossorigin=""?
+https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
+//-->
+  <script crossorigin="" src="https://thenerdshow.com/js/prefixfree.min.js"></script>
+  <script crossorigin="" src="https://thenerdshow.com/js/prefixfree.dynamic-dom.min.js"></script>
+
+  <link crossorigin="" rel="stylesheet" href="https://thenerdshow.com/css/github.css">
+  <script crossorigin="" src="https://thenerdshow.com/js/highlight.pack.js"></script>
+  <script>
+  hljs.initHighlightingOnLoad();
+  </script>
+  
+  <script>
+  function echo(e){
+    document.write(document.querySelector(e).innerHTML);
+  }
+  </script>
+  <style>
+  .white {
+    background-color: #f1f1f1;
+    text-align: center;
+    border: 1px solid #888;
+    position: relative;
+    overflow: auto;
+    white-space: nowrap;
+    border-radius:5px;
+    padding:5px;
+  }
+  .white:hover {
+    box-shadow: 5px 10px 8px #222;
+  }
+  code {
+    margin: auto;
+    float: left;
+    border: 1px solid black;
+  }
+  html body {
+    background: #846942;
+    height: 100%;
+  }
+  </style>
+  <style>
+  .minimized {
+    width:  62px !important;
+    height: 25px;
+    bottom: 8px;
+    overflow: hidden; 
+    padding: 0;
+  }
+  .maximized {
+    width:  100% !important;
+    height: 100%;
+    top: 0; left: 0;
+    padding: 0;
+  }
+  </style>
+  
+  <script id="addIcon">
+  /** use google icons */
+  function useIcons(){
+    if (!document.querySelector("#googleicons")) {
+      var lnk = document.createElement("link");
+      lnk.rel = "stylesheet";
+      lnk.id = "googleicons";
+      lnk.href = "https://fonts.googleapis.com/icon?family=Material+Icons";
+      document.querySelector("head").appendChild(lnk);
+  } }
+  /** addIcon | Attach a clickable icon to an element.
+   *  @param {string} iname   - The name of the icon
+   *  @param {string} style   - Style info. "right:10px;font-size:60px;"
+   *  @param {string} ele     - Query selector of element to receive the button.
+   *  @param {Object} cb      - Callback function to receive click events.
+   */
+  function addIcon(iname, style, ele, cb){
+    //initialize icons?
+    if(!addIcon.useIcons){
+      useIcons(); addIcon.useIcons = true;
+    }
+    var icon = document.createElement("i");
+    icon.classList.add("material-icons");
+    icon.style = "position:absolute;cursor:pointer;" + style;
+    icon.innerHTML = iname; ele.appendChild(icon);
+    if (icon.addEventListener) icon.addEventListener("click", cb);
+    else icon.attachEvent("click", cb);
+  }
+  </script>
+</head>
+<body>
+ <h1><script>echo("title");</script></h1>
+ 
+<i class="material-icons">minimize</i>
+<i class="material-icons">restore</i>
+<i class="material-icons">close</i>
+<i class="material-icons">computer</i>
+<i class="material-icons">traffic</i>
+
+<p>Add clickable icons from <a href=
+"https://www.w3schools.com/icons/icons_reference.asp">Google Icons</a> to an 
+element of a web page. Go there and see. Or use these convenience functions. Optionally pass style information and a callback function to do something when a user clicks the icon.</p>
+
+<p>This tutorial walks through the steps of using these icons on your widgets. 
+Together, we will create a convenience library function to add an icon to an 
+element. Then we will create a function to add the traditional minimize, 
+maximize, and close icons to a widget. </p>
+
+<p>This script is part of the <a href="https://github.com/themanyone/kickass"> 
+Kickass</a> javascript library collection, released under the Apache public 
+license. Use only what is necessary for fast page loads, simplicity, and 
+convenience. Download updated modules from <a href=
+"https://github.com/themanyone/kickass">GitHub</a>. </p>
+
+<script>
+  function doClick(e){
+    var name = document.querySelector("#name");
+    var output = document.querySelector("#output");
+    output.innerHTML = "Hi " + name.value;
+  }
+</script>
+
+<p>A test widget with clickable titlebar icons.</p>
+
+<div id="test" class="white" style="width: 300px">
+<h1 id="output">Test Widget</h1>
+
+<label>Name:</label><input id="name" type="text"></input>
+<button onclick="doClick(this)">Enter</button>
+</div>
+
+<p>An example charting widget using clicable titlebar icons.</p>
+
+<div id="chart" class="white" style="width: 500px">
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div id="tradingview_710b8"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NASDAQ-AAPL/" rel="noopener" target="_blank"><span class="blue-text">AAPL Chart</span></a> by TradingView</div>
+  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+  <script type="text/javascript">
+  new TradingView.widget(
+  {
+  "width": 500,
+  "height": 300,
+  "symbol": "NASDAQ:AAPL",
+  "interval": "D",
+  "timezone": "Etc/UTC",
+  "theme": "light",
+  "style": "1",
+  "locale": "en",
+  "toolbar_bg": "#f1f3f6",
+  "enable_publishing": false,
+  "allow_symbol_change": true,
+  "container_id": "tradingview_710b8"
+}
+  );
+  </script>
+</div>
+<!-- TradingView Widget END -->
+</div>
+
+<script id="titleIcons">
+  /** create some titlebar icons */
+  function titleIcons(t){
+    //minimize
+    addIcon("minimize", "right:40px;top:0px;", t, function(e){
+      pe = e.target.parentElement;
+      var rect = pe.getBoundingClientRect();
+      if (pe.classList.contains("minimized")) {
+        pe.classList.remove("minimized");
+      } else {
+        pe.classList.add("minimized");
+      }
+    });
+    //maximize
+    addIcon("web_asset", "right:20px;top:0px;", t, function(e){
+      pe = e.target.parentElement;
+      var rect = pe.getBoundingClientRect();
+      if (pe.classList.contains("maximized")) {
+        pe.classList.remove("maximized");
+      } else {
+        pe.classList.add("maximized");
+      }
+    });
+    //close
+    addIcon("close", "right:0px;top:0px;", t, function(e){
+      e.target.parentElement.remove();
+    });
+  }
+  titleIcons(document.querySelector("#test"));
+</script>
+</body></html>
