@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html><head><title>Titlebar Icons</title>
+<html><head><title>Google Icons</title>
 <!--
 // Copyright (C) 2020 by Henry Kroll, thenerdshow.com
 /* Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,6 +49,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
   .widget:hover {
     box-shadow: 5px 10px 8px #222;
   }
+  h1, h2, h3, i {color: #321}
   </style>
   <style>
   pre {
@@ -56,11 +57,10 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
   }
   code {
     margin: auto;
-    
     border: 1px solid black;
   }
   html body {
-    background: #b86;
+    background: #ca8;
     height: 100%;
   }
   </style>
@@ -78,12 +78,12 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
   /** addIcon | Attach a clickable icon to an element.
    *  @param {string} iname   - The name of the icon
    *  @param {string} style   - Style info. "right:10px;font-size:60px;"
-   *  @param {string} ele     - Query selector of element to receive the icon.
+   *  @param {string} qs      - Query selector of element to receive the icon.
    *  @param {Object} cb      - Callback function to receive click events.
    */
-  function addIcon(iname, style, ele, cb){
+  function addIcon(iname, style, qs, cb){
     useIcons();
-    var icon = document.createElement("i");
+    var icon = document.createElement("i"), ele = document.querySelector(qs);
     icon.classList.add("material-icons");
     icon.style = "position:absolute;cursor:pointer;" + style;
     icon.innerHTML = iname;
@@ -95,8 +95,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
 
   <script id="titleIcons">
     /** create some titlebar icons */
-    function titleIcons(e){
-      t = document.querySelector(e);
+    function titleIcons(iname, qs){
       iconStyles = document.querySelector("#iconStyles");
       //create stylesheet if necessary
       if(!iconStyles){
@@ -119,8 +118,10 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
         }`;
         document.querySelector("head").appendChild(style);
       }
+      //friendly icon
+      addIcon(iname, "left:1px; top:0", qs);
       //minimize
-      addIcon("minimize", "right:40px;top:0px;", t, function(e){
+      addIcon("minimize", "right:40px;top:0px;", qs, function(e){
         pe = e.target.parentElement;
         icons = pe.querySelectorAll(".material-icons");
         //do minimize
@@ -138,7 +139,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
         e.stopPropagation();
       });
       //maximize
-      addIcon("web_asset", "right:20px;top:0px;", t, function(e){
+      addIcon("web_asset", "right:20px;top:0px;", qs, function(e){
         pe = e.target.parentElement;
         var rect = pe.getBoundingClientRect();
         if (pe.classList.contains("maximized")) {
@@ -149,7 +150,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
         }
       });
       //close
-      addIcon("close", "right:0px;top:0px;", t, function(e){
+      addIcon("close", "right:0px;top:0px;", qs, function(e){
         e.target.parentElement.remove();
       });
     }
@@ -170,9 +171,9 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
   <i class="material-icons">computer</i>
   <i class="material-icons">traffic</i></h2>
 
-<p>This tutorial walks through the steps of adding <a href= "https://www.w3schools.com/icons/icons_reference.asp">Google Icons</a> to a <i>widget</i>, or any element for that matter. A widget is like a minature application or form that users interact with. We can improve the user experience by making our widgets look and behave like windows. First, we will create a generic function to add an icon. Then we will make another function to add <i>titlebar icons</i> (the minimize, maximize, and close buttons) to a widget.</p>
+<p>This tutorial walks through the steps of adding <a href= "https://www.w3schools.com/icons/icons_reference.asp">Google Icons</a> to <i>widgets</i> and other elements. A widget is like a minature application or form that users interact with. We can use icons to make widgets look and behave like windows. First, we will create a generic function to add an icon. Then we will make another function to add <i>titlebar icons</i> (minimize, maximize, and close buttons) to a widget.</p>
 
-<p>Here's a test widget before and after adding titlebar icons.</p>
+<p>Here's a test widget with a form, before and after adding titlebar icons.</p>
 
   <div id="" class="widget" style="width: 300px">
     <h1 id="output">Test Widget</h1>
@@ -195,7 +196,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
     <button onclick="doClick(this.parentElement)">Enter</button>
   </div>
   
-<p>Here's an example charting widget with titlebar icons added.</p>
+<p>Here's an example charting widget with titlebar icons.</p>
 
 <div id="chart" class="widget" style="width: 500px"><br>
 <!-- TradingView Widget BEGIN -->
@@ -227,7 +228,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
   
   <h2>The Code</h2>
 
-<p>To create the above widgets, we needed some basic styles. Put these inside the <b>&lt;head&gt;</b> section of the web page.</p>
+<p>To create the above widgets, we need some basic styles. Put these inside the <b>&lt;head&gt;</b> section of the web page.</p>
 
   <!-- Code Block -->
   <script>echoCode("#widgetStyles", "css");</script>
@@ -246,22 +247,22 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
 <p>The <b>addIcon</b>() function first calls <b>useIcons</b>() to initialize the icons. Then it creates an icon element with the name we give it. It uses style informaiton to place the icon wherever we want it in the widget. Using this code, we can write another function to add all three titlebar icons.</p>
 
   <script id="addTitleIcons">
-    titleIcons("#test");
-    titleIcons("#chart");
+    titleIcons("person_outline", "#test");
+    titleIcons("trending_up", "#chart");
   </script>
 
   <!-- Code Block -->
   <script>echoCode("#titleIcons", "html");</script>
   
-<p>The <b>titleIcons</b>() script uses <b>addIcon</b>() to add the three icons, maximize, minimize, and close. It takes care to add the necessary styles first. Then it calls <b>addIcon</b>() three times, once for each titlebar icon. All we have to do is tell it the icon name, some style info saying where to put the icon, in this case in the top-right of the widget, the widget to add icons to, and an event handler callback function. The event handlers change Styles depending on which icon was clicked</p>
+<p>The <b>titleIcons</b>() script takes an icon name for the top-left corner as its first argument. The second argument is the CSS selector of the element to add the titlebar icons to. It calls <b>addIcon</b>() three times to add the three icons, maximize, minimize, and close. It takes care to insert the necessary styles first. All <b>addIcon</b>() requires is the icon name, some style info saying where to put the icon, in this case in the top-right of the widget, the widget to add icons to, and an event handler or callback function. The event handler changes Styles to maximize or minimize the window depending on which icon is clicked.</p>
 
 <h2>Wrapping Up</h2>
   
-<p>That's it. We created some widgets on a web page. We wrote a script to put an icon on them. Then we made another script to add the titlebar icons. From now on, we don't need to cut and paste all these scripts into a page. We can simply include them like this.</p>
+<p>That's it. We created some widget windows on a web page. We wrote a script to put an icon on them. Then we made another script to add the titlebar icons. We can now transfer the scripts from this page into a separate javascript file, named "titleIcons." That way, we don't need to cut and paste all these scripts into every page where they are required. We can simply include them like this.</p>
 
-<pre><code>&lt;script src="titleIcons.js"&gt;&lt;/script&gt;</code></pre>
+<pre><code>&lt;script type="module" src="kickass/icons.js"&gt;&lt;/script&gt;</code></pre>
 
-<p>Finally, we get to call our <b>titleIcons</b>() function. All we have to do is give it the <a href="https://www.w3schools.com/cssref/css_selectors.asp">css selectors</a> of the widgets we want to add title icons to. In this case, the ids are #test and #chart.</p>
+<p>Then call the <b>titleIcons</b>() function. All that is required is give it the <a href="https://www.w3schools.com/cssref/css_selectors.asp">css selectors</a> of the widgets we want to add title icons to. In this case, the ids are #test and #chart.</p>
   
   <script>echoCode("#addTitleIcons", "html");</script>
 
