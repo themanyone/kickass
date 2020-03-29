@@ -38,21 +38,9 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
   .widget:hover {
     box-shadow: 5px 10px 8px #222;
   }
-  h1, h2, h3, i {color: #321}
   </style>
-  <style>
-  pre {
-    display: inline-block;
-  }
-  code {
-    margin: auto;
-    border: 1px solid black;
-  }
-  html body {
-    background: #ca8;
-    height: 100%;
-  }
-  </style>
+
+<link rel="stylesheet" href="kickass.css">
   
   <script id="addIcon">
   /** useIcons | use google icons */
@@ -149,10 +137,8 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
 
 
 <body>
-  <h1>Kickass JS</h1>
-  
-  <p>A javascript widget library collection released under the Apache public license. Use only what is necessary for fast page loads, simplicity, and convenience. Download updated modules from <a href=
-"https://github.com/themanyone/kickass">GitHub</a>. </p>
+  <iframe id="about" width="100%" scrolling="no" src="about.html" 
+  seamless="seamless"></iframe>
   
   <h2><script>_echo("title");</script> 
   <i class="material-icons">minimize</i>
@@ -166,21 +152,21 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
   <div id="" class="widget" style="width: 300px">
     <h1 id="output">A Plain Widget</h1>
 
-    <label>Name:</label><input id="name" type="text"></input>
+    <label>Name:</label><input type="text"></input>
     <button onclick="doClick(this.parentElement)">Enter</button>
   </div>
 
   <div id="test" class="widget" style="display: inline-block; width: 300px">
     <script>
       function doClick(e){
-        var name = e.querySelector("#name");
+        var name = e.querySelector("input");
         var output = e.querySelector("#output");
         output.innerHTML = "Hi " + name.value;
       }
     </script>
     <h1 id="output">Widget With Icons</h1>
 
-    <label>Name:</label><input id="name" type="text"></input>
+    <label>Name:</label><input type="text"></input>
     <button onclick="doClick(this.parentElement)">Enter</button>
   </div>
 

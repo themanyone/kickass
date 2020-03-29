@@ -15,22 +15,32 @@
 <script src="icons.js"></script>
 <script src="draggable.js"></script>
 
-<link rel="stylesheet" href="kickass.css">
+  <link rel="stylesheet" href="https://thenerdshow.com/css/github.css">
+  <script src="https://thenerdshow.com/js/highlight.pack.js"></script>
+  <script>
+  hljs.initHighlightingOnLoad();
+  </script>
   
+<script type="module" src="kickass.mjs"></script>
+
+<link rel="stylesheet" href="kickass.css">
+
 </head>
 <body>
-
-<p>Test</p>
+  <iframe id="about" width="100%" scrolling="no" src="about.html" 
+  seamless="seamless"></iframe>
+  
+  <h2>_echo(title)</h2>
 
     <div id="ordinary_div" style="display:inline-block; border: 1px solid black">
-    <h1>Ordinary DIV</h1>
+    <h1>This is a DIV</h1>
     </div>
 
     <div id="my_widget_id">
-    <h1>Widgeteized DIV</h1>
+    <h1>This is a Widget</h1>
     </div>
   
-<script>
+<script id="widgetize" type="module">
   function widgetize(iname, id){
     if (!document.querySelector("#widgetStyle")) {
       var style = document.createElement("style");
@@ -48,15 +58,18 @@
         .widget:hover {
           box-shadow: 5px 10px 8px #222;
         }
-        h1, h2, h3, i {color: #321}
       `;
       document.querySelector("head").appendChild(style);
     }
-    ele = document.querySelector(id);
+    var ele = document.querySelector(id);
     ele.classList.add("widget");
     titleIcons(iname, id);
     return draggable(id);
   }
-
-  widgetize("sentiment_very_satisfied", "#my_widget_id");</script>
+  widgetize("sentiment_very_satisfied", "#my_widget_id");
+  </script>
+  
+  <p>Code</p>
+  
+  _code(script#widgetize)
 </body></html>
