@@ -172,11 +172,11 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
 <p>First, include <b>icons.js</b> on the page</p>
 
 
-<pre><code>&lt;script type="module" src="kickass/icons.js"&gt;&lt;/script&gt;</code></pre>
+<pre><code>&lt;script src="kickass/icons.js"&gt;&lt;/script&gt;</code></pre>
 
-<p>Then, at the bottom of the page, or in a load event handler, put some Javascript to attach titlebar icons to a widget named "my_widget_id" with a happy face in the top-left corner.</p>
+<p>Then, at the bottom of the page, in a load event handler, or with Javascript defer, attach titlebar icons to a widget named "my_widget_id" with a happy face in the top-left corner.</p>
 
-<pre><code>&lt;script&gt;titleIcons("sentiment_very_satisfied", "#my_widget_id");&lt;/script&gt;</code></pre>
+<pre><code>&lt;script defer&gt;titleIcons("sentiment_very_satisfied", "#my_widget_id");&lt;/script&gt;</code></pre>
 
 <hr>
 
