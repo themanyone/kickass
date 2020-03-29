@@ -141,14 +141,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
 
 <p>This tutorial walks through the steps of creating widgets and adding icons to them.</p>
 
-  <div id="" class="widget" style="width: 300px">
-    <h1 id="output">A Plain Widget</h1>
-
-    <label>Name:</label><input type="text"></input>
-    <button onclick="doClick(this.parentElement)">Enter</button>
-  </div>
-
-  <div id="test" class="widget" style="display: inline-block; width: 300px">
+  <div id="plain" class="widget" style="width: 300px">
     <script>
       function doClick(e){
         var name = e.querySelector("input");
@@ -156,6 +149,13 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
         output.innerHTML = "Hi " + name.value;
       }
     </script>
+    <h1 id="output">A Plain Widget</h1>
+
+    <label>Name:</label><input type="text"></input>
+    <button onclick="doClick(this.parentElement)">Enter</button>
+  </div>
+
+  <div id="test" class="widget" style="display: inline-block; width: 300px">
     <h1 id="output">Widget With Icons</h1>
 
     <label>Name:</label><input type="text"></input>
@@ -220,7 +220,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
 <p>The test widget is just a plain <b>&lt;div&gt;</b> element with text input and a handler function. Add this HTML code to the <b>&lt;body&gt;</b> section of the web page.</p>
 
   <!-- Code Block -->
-  <pre data-code="#test"></pre>
+  <pre data-code="#plain"></pre>
   
 <p>Now let's create an <b>addIcon</b>() Javascript function to attach an icon to any widget. First, we write a function to initialize Google icons, but <b>addIcon</b>() will take care of calling it automatically.</p>
 
