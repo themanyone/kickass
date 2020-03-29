@@ -55,9 +55,9 @@ limitations under the License. */ //-->
   </style>
 </head>
 <body>
-  <div>include(about.html)</div>
-
-  <h2>echo(title)</h2>
+  <div data-href="about.html"></div>
+  
+  <h2 data-echo="title"></h2>
   
   <p>This tutorial walks through creating some basic elements or widgets and making them draggable.</p>
   
@@ -178,32 +178,19 @@ limitations under the License. */ //-->
   }
   window.addEventListener('load', dragElements(".draggable"));
   </script> 
-  <script>
-
-  function htmlEntities(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-  }
-  document.write("<pre><code>&lt;html&gt;&lt;head&gt;\n&lt;style&gt;",
-   htmlEntities(document.querySelector("style").innerText), "\n&lt;/style&gt;&lt;/head&gt;&lt;body&gt;</code></pre>");
-  </script><noscript>View the page source to see how to create the
-  CSS styles.</noscript>
+  <pre data-code="style"></pre>
   
   <h2 style="clear:both">Draggable Elements</h2>
     
     <p>Create a parent element such as a <b>div</b> to hold all draggable widgets and assign a <b>class="draggable"</b> to it. This serves as a container to receive drag and move events. We could assign <b>class="draggable"</b> to the document's <b>body</b> element. And in fact that's what the <b>widgetize()</b> function does. But there may be side effects if you want to use drag and drop elsewhere on the page. Widgets do not have to stay inside the draggable (They can use absolute positioning). Here, we define two dragable elements. One of them is draggable because it has a <b>titlebar</b>. The others have no titlebar; so the only way to make them draggable is to add a <b>drag</b> class.</p> 
 
-  <script>
-   var t = htmlEntities(document.querySelector("div.draggable").outerHTML);
-   document.write("<pre><code class=html> ",
-   t, "\n</code></pre>");
-  </script>
+  <pre data-code="div.draggable"></pre>
+  
   <h2 style="clear:both">JavaScript</h2>
   <p>
   Here is the javascript to move things around.</p>
-  <script>
-   document.write("<pre><code>&lt;script&gt;",
-   htmlEntities(document.querySelector("script#dragElements").innerText), "\n&lt;/script&gt;</code></pre>");
-  </script>
+  <pre data-code="script#dragElements"></pre>
+  
   <p style="clear:both"><br>
    We transfered the scripts from this page into a separate javascript file, named "dragElements.js". That way, we don't need to cut and paste all these scripts into every page where they are required. We can simply include them like this.</p>
   
@@ -227,11 +214,9 @@ limitations under the License. */ //-->
    divs[1].addEventListener("stopmove",
       e=>e.target.style.background="");
   </script> 
-  <script>
-
-   document.write("<pre><code>&lt;script&gt;\n",
-   htmlEntities(document.querySelector("script#shadows").innerText), "\n&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</code></pre>");
-  </script>
+  
+  <pre data-code="script#shadows"></pre>
+  
   <h2 style="clear:both">Wrapping Up</h2>
   <p>
   Well, that's it. We defined CSS classes for dragable objects, one that moves with a titlebar, and one that doesn't. We created a page to display them. We defined elements that can move with the mouse or with tablet and phone gestures. Then we added events to the dragable elements to color them as they move. If this tutorial was helpful, please subcribe for more updates.</p>

@@ -135,14 +135,9 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
 
 
 <body>
-  <div>include(about.html)</div>
+  <div data-href="about.html"></div>
   
-  <h2>echo(title)
-  <i class="material-icons">minimize</i>
-  <i class="material-icons">restore</i>
-  <i class="material-icons">close</i>
-  <i class="material-icons">computer</i>
-  <i class="material-icons">traffic</i></h2>
+  <h2 data-echo="title"></h2>
 
 <p>This tutorial walks through the steps of creating widgets and adding icons to them.</p>
 
@@ -174,7 +169,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
 
 <pre><code>&lt;script src="kickass/icons.js"&gt;&lt;/script&gt;</code></pre>
 
-<p>Then, at the bottom of the page, in a load event handler, or with Javascript defer, attach titlebar icons to a widget named "my_widget_id" with a happy face in the top-left corner.</p>
+<p>Then, at the bottom of the page, in a load event handler, with Javascript <a href="https://javascript.info/modules-intro">modules</a>, or <a href="https://flaviocopes.com/javascript-async-defer/">defer</a>, attach titlebar icons to a widget named "my_widget_id" with a happy face in the top-left corner.</p>
 
 <pre><code>&lt;script defer&gt;titleIcons("sentiment_very_satisfied", "#my_widget_id");&lt;/script&gt;</code></pre>
 
@@ -219,18 +214,18 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
 <p>To set our widgets apart from the pasge, we need some basic styles. Put these styles inside the <b>&lt;head&gt;</b> section of the web page to override default widget styles loaded by our scripts. Relative positioning is necessary so the icons can use absolute positioning within the element. We can change widgets to absolute positioning later to move them around. Display: inline-block allows us to place widgets side by side. And of course some padding separates them from the rest of the page content.</p>
 
   <!-- Code Block -->
-  <pre>code(#widgetStyles)</pre>
+  <pre data-code="#widgetStyles"></pre>
 
   
 <p>The test widget is just a plain <b>&lt;div&gt;</b> element with text input and a handler function. Add this HTML code to the <b>&lt;body&gt;</b> section of the web page.</p>
 
   <!-- Code Block -->
-  <pre>code(#test)</pre>
+  <pre data-code="#test"></pre>
   
 <p>Now let's create an <b>addIcon</b>() Javascript function to attach an icon to any widget. First, we write a function to initialize Google icons, but <b>addIcon</b>() will take care of calling it automatically.</p>
 
   <!-- Code Block -->
-  <pre>code(#addIcon)</pre>
+  <pre data-code="#addIcon"></pre>
   
 <p>The <b>addIcon</b>() function first calls <b>useIcons</b>() to initialize the icons. Then it creates an icon element with the name we give it. It uses style informaiton to place the icon wherever we want it within the widget. Using this code, we can write another function to add all three titlebar icons.</p>
 
@@ -240,7 +235,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
   </script>
 
   <!-- Code Block -->
-  <pre>code(#titleIcons)</pre>
+  <pre data-code="#titleIcons"></pre>
   
 <p>The <b>titleIcons</b>() script takes an icon name for the top-left corner as its first argument. The second argument is the <a href="https://www.w3schools.com/cssref/css_selectors.asp">CSS selector</a> of the element to add the titlebar icons to. It calls <b>addIcon</b>() three times to add the three icons, maximize, minimize, and close. It takes care to insert the necessary styles first. All <b>addIcon</b>() requires is the icon name, some style info saying where to put the icon, in this case in the top-right of the widget, the widget to add icons to, and an event handler or callback function. The event handler changes Styles to maximize or minimize the window depending on which icon is clicked.</p>
 
@@ -252,6 +247,6 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
 
 <p>Then call the <b>titleIcons</b>() function. All that is required is give it the name of the <a href= "https://www.w3schools.com/icons/icons_reference.asp">Google Icon</a> and the <a href="https://www.w3schools.com/cssref/css_selectors.asp">CSS selector</a> of the widget we want to add title icons to. In this case, the ids are #test and #chart.</p>
   
-  <pre>code(#addTitleIcons)</pre>
+  <pre data-code="#addTitleIcons"></pre>
 
 </body></html>

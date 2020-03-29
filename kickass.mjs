@@ -1,6 +1,6 @@
 // Kickass Copyright (C) 2014-2020 by Henry Kroll, www.thenerdshow.com
 var _doc  = document, _body = _doc.body, _get = e=> _doc.getElementById(e),
-    _qs = qs=>_doc.querySelector(qs);
+    _qs = qs=>_doc.querySelector(qs), _qsa = qs=>_doc.querySelectorAll(qs)
 
 var _dce = function(tagName, id=null, classNames=null){
   var ret =_doc.createElement(tagName);
@@ -47,12 +47,9 @@ link.rel="stylesheet", link.href = "kickass.css";
 _qs("head").appendChild(link);
 
 //process replacement commands
-_body.children.forAll(ele=>{
-  ele.innerHTML = ele.innerHTML
-    .replace(/^echo\(['"]?([^)]+)['"]?\)/gi, (match,p1)=>_qs(p1).innerHTML)
-    .replace(/^code\(['"]?([^)]+)['"]?\)$/gi, (match,p1)=>
-      "<code>" + htmlEntities(_qs(p1).outerHTML) + "</code>")
-    .replace(/^include\(['"]?([^)]+)['"]?\)$/gi, (match,p1)=>includeHTML(ele, p1));
-  });
+_qsa("[data-echo]").forAll(ele=>ele.innerHTML = _qs(ele.dataset.echo).innerHTML);
+_qsa("[data-code]").forAll(ele=>ele.innerHTML = 
+  "<code>" + htmlEntities(_qs(ele.dataset.code).outerHTML)+ "</code>");
+_qsa("[data-href]").forAll(ele=>includeHTML(ele, ele.dataset.href));
 
 export {  };
