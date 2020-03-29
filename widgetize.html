@@ -23,14 +23,11 @@
   
 <script type="module" src="kickass.mjs"></script>
 
-<link rel="stylesheet" href="kickass.css">
-
 </head>
 <body>
-  <iframe id="about" width="100%" scrolling="no" src="about.html" 
-  seamless="seamless"></iframe>
+  <div>include(about.html)</div>
   
-  <h2>_echo(title)</h2>
+  <h2>echo(title)</h2>
 
     <div id="ordinary_div" style="display:inline-block; border: 1px solid black">
     <h1>This is a DIV</h1>
@@ -42,23 +39,22 @@
   
 <script id="widgetize" type="module">
   function widgetize(iname, id){
-    if (!document.querySelector("#widgetStyle")) {
+    if (!document.querySelector("#widgetStyles")) {
       var style = document.createElement("style");
-      style.id = "#widgetStyle";
+      style.id = "widgetStyles";
       style.innerHTML = `
-        .widget {
-          position: relative;
-          display: inline-block;
-          background-color: #f1f1f1;
-          text-align: center;
-          border: 1px solid #888;
-          border-radius:5px;
-          padding:5px;
-        }
-        .widget:hover {
-          box-shadow: 5px 10px 8px #222;
-        }
-      `;
+.widget {
+  position: relative;
+  display: inline-block;
+  background-color: #f1f1f1;
+  text-align: center;
+  border: 1px solid #888;
+  border-radius:5px;
+  padding:5px;
+}
+.widget:hover {
+  box-shadow: 5px 10px 8px #222;
+}`;
       document.querySelector("head").appendChild(style);
     }
     var ele = document.querySelector(id);
@@ -71,5 +67,5 @@
   
   <p>Code</p>
   
-  _code(script#widgetize)
+  <pre>code(script#widgetize)</pre>
 </body></html>

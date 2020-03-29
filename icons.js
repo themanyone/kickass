@@ -31,21 +31,22 @@
     if(!iconStyles){
       style=document.createElement("style");
       style.id = "iconStyles";
-      style.innerHTML = `  .minimized {
-        height: 65px;
-        width: 65px !important;
-        overflow: hidden;
-        padding: 0;
-        cursor: pointer;
-      }
-      .maximized {
-        position: absolute;
-        z-index: 99;
-        width:  100% !important;
-        height: 100%;
-        top: 0; left: 0;
-        padding: 0;
-      }`;
+      style.innerHTML = `
+.minimized {
+  height: 65px;
+  width: 65px !important;
+  overflow: hidden;
+  padding: 0;
+  cursor: pointer;
+}
+.maximized {
+  position: absolute;
+  z-index: 99;
+  width:  100% !important;
+  height: 100%;
+  top: 0; left: 0;
+  padding: 0;
+}`;
       document.querySelector("head").appendChild(style);
     }
     //friendly icon

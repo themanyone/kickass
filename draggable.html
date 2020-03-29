@@ -21,10 +21,9 @@ limitations under the License. */ //-->
   <script>
   hljs.initHighlightingOnLoad();
   </script>
-  <script src="kickass.js"></script>
-  <link rel="stylesheet" href="kickass.css">
+  <script type="module" src="kickass.mjs"></script>
 
-  <style id="dragStyle">
+  <style id="dragStyles">
   /* a container class to handle drag events */
   .draggable {
      position: absolute;
@@ -43,7 +42,7 @@ limitations under the License. */ //-->
       cursor: move;
   }
   </style>
-  <style id="widgetStyle">
+  <style id="widgetStyles">
   .widget {
      background-color: #f1f1f1;
      text-align: center;
@@ -56,10 +55,9 @@ limitations under the License. */ //-->
   </style>
 </head>
 <body>
-  <iframe id="about" width="100%" scrolling="no" src="about.html" 
-  seamless="seamless"></iframe>
+  <div>include(about.html)</div>
 
-  <h2><script>_echo("title");</script></h2>
+  <h2>echo(title)</h2>
   
   <p>This tutorial walks through creating some basic elements or widgets and making them draggable.</p>
   

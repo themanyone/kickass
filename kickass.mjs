@@ -31,13 +31,28 @@ Array.prototype.uniq = function(){
 	return Object.keys(obj);
 };
 
-(e=>{
-  //process replacement commands
-  var h = _body.innerHTML
-    .replace(/_echo\(([^)]+)\)/gi, (match,p1)=>_qs(p1).innerHTML)
-    .replace(/_code\(([^)]+)\)/gi, (match,p1)=>
-      "<pre><code>" + htmlEntities(_qs(p1).outerHTML) + "</code></pre>");
-  _body.innerHTML = h;
-})();
+var includeHTML = async function(ele, url) {
+  const utf8Decoder = new TextDecoder('utf-8');
+    const res = await fetch(url);
+    const reader = res.body.getReader();
+    let { value: chunk, done: readerDone } = await reader.read();
+    chunk = chunk ? utf8Decoder.decode(chunk) : '';
+    ele.innerHTML = chunk;
+};
+
+//load kickass.css
+var link = document.createElement("link");
+link.id = "kickass";
+link.rel="stylesheet", link.href = "kickass.css";
+_qs("head").appendChild(link);
+
+//process replacement commands
+_body.children.forAll(ele=>{
+  ele.innerHTML = ele.innerHTML
+    .replace(/^echo\(['"]?([^)]+)['"]?\)/gi, (match,p1)=>_qs(p1).innerHTML)
+    .replace(/^code\(['"]?([^)]+)['"]?\)$/gi, (match,p1)=>
+      "<code>" + htmlEntities(_qs(p1).outerHTML) + "</code>")
+    .replace(/^include\(['"]?([^)]+)['"]?\)$/gi, (match,p1)=>includeHTML(ele, p1));
+  });
 
 export {  };

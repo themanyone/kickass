@@ -1,23 +1,17 @@
-  pre {
-    display: inline-block;
-  }
-  code {
-    margin: auto;
-    border: 1px solid black;
-  }
-  html body {
-    background: #ca8;
-    height: 100%;
-  }
-  h1, h2, h3 {
-	  margin-top: 10px;
-	  margin-bottom: 0;
-	  color: #420
-  }
-  i {color: #321;}
-  iframe[seamless]{
-    background-color: transparent;
-    border: 0 none transparent;
-    padding: 0; margin: 0;
-    overflow: hidden;
-  }
+pre {
+  display: inline-block;
+}
+code {
+  margin: auto;
+  border: 1px solid black;
+}
+html body {
+  background: #ca8;
+  height: 100%;
+}
+h1, h2, h3 {
+  margin-top: 10px;
+  margin-bottom: 0;
+  color: #420
+}
+i {color: #321;}

@@ -7,22 +7,23 @@
   function dragElements(qs){
     var head = document.querySelector("head");
     //load dragStyle if page doesn't already have it
-    if (!document.querySelector("#dragStyle")) {
+    if (!document.querySelector("#dragStyles")) {
       var style = document.createElement("style");
+      style.id = "dragStyles";
       style.innerHTML = `
-        /* a titlebar class to move a parent around with it */
-        .titlebar {
-           position: absolute;
-           cursor: move;
-           padding: 10px;
-           background-color: #2196F3;
-           color: #fff;
-           font-weight: bold;
-        }
-        /* a drag class to move elements without a titlebar */
-        .drag {
-            cursor: move;
-        }`;
+/* a titlebar class to move a parent around with it */
+.titlebar {
+   position: absolute;
+   cursor: move;
+   padding: 10px;
+   background-color: #2196F3;
+   color: #fff;
+   font-weight: bold;
+}
+/* a drag class to move elements without a titlebar */
+.drag {
+    cursor: move;
+}`;
       head.appendChild(style);
     }
     //load prefixfree if page doesn't already have it
