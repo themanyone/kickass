@@ -10,14 +10,15 @@ overlap, instead of using a bulky framework.
 ## Windows-like Components
 
 These components allow forms, web apps or "widgets" to 
-behave like miniature desktop windows inside the app or 
+behave like miniature desktop windows inside an app or 
 web page. They give users improved control over content, 
-so they can reposition forms when using different-sized 
+so they can reposition forms when using odd-sized 
 on-screen keyboards, for example.
 
- * Draggable - make draggable widget windows (done)
- * Minimize - close button + titlebar icons (done)
- * Decorator  - fancy borders (todo)
+ * Kickass   - a shared library of common functions
+ * Widget    - turn a div into a fancy widget
+ * Draggable - make elements draggable
+ * Icons     - add close button + titlebar icons
  
 Each component comes with an HTML tutorial walking 
 through each step to effectively deploy it on a web 

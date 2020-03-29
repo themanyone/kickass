@@ -1,13 +1,42 @@
-
   /* Draggable Elements: Drag and dragElements elements with mouse or gestures */
   //Adapted to optionally work with titlebars.
   //References: 
      //www.w3schools.com/howto/tryit.asp?filename=tryhow_js_draggable
      //www.kirupa.com/html5/drag.htm
      //www.kirupa.com/html5/examples/drag_multiple.htm
-  function dragElements(e){
-    var container = document.querySelector(e);
-    var activeItem = null, ca = container.addEventListener;
+  function dragElements(qs){
+    var head = document.querySelector("head");
+    //load dragStyle if page doesn't already have it
+    if (!document.querySelector("#dragStyle")) {
+      var style = document.createElement("style");
+      style.innerHTML = `
+        /* a titlebar class to move a parent around with it */
+        .titlebar {
+           position: absolute;
+           cursor: move;
+           padding: 10px;
+           background-color: #2196F3;
+           color: #fff;
+           font-weight: bold;
+        }
+        /* a drag class to move elements without a titlebar */
+        .drag {
+            cursor: move;
+        }`;
+      head.appendChild(style);
+    }
+    //load prefixfree if page doesn't already have it
+    if (!document.querySelector("script[src*=prefixfree]")){
+      script = document.createElement("script");
+      script.src = "https://thenerdshow.com/js/prefixfree.min.js";
+      head.appendChild(script);
+      script = document.createElement("script");
+      script.src = "https://thenerdshow.com/js/prefixfree.dynamic-dom.min.js";
+      head.appendChild(script);
+    }
+    var ele = document.querySelector(qs);
+    if(ele===null) return;
+    var activeItem = null, ca = ele.addEventListener;
     
     ca("touchstart", dragStart, false);
     ca("touchend", dragEnd, false);
@@ -29,14 +58,14 @@
       else {//find something to drag
          while (!et.classList.contains("drag")){
             //if nothing is drag, we're done here
-            if (!et.parentElement || et === container) return;
+            if (!et.parentElement || et === ele) return ele;
             et = et.parentElement; //keep looking
          }
       } activeItem = et;
       
       //move on top of other elements
-      for (i = container.children.length; i--;)
-         container.children[i].style.zIndex="";
+      for (i = ele.children.length; i--;)
+         ele.children[i].style.zIndex="";
       activeItem.style.zIndex="1";
 
        if (!activeItem.xOffset) { activeItem.xOffset = 0; }
@@ -82,5 +111,14 @@
     function setTranslate(xPos, yPos, el) {
       el.style.transform = "translate(" + xPos + "px, " + yPos + "px)";
     }
+    return ele;
+  }
+  //Make an element draggable.
+  //Drop in draggable stylesheet, if necessary.
+  function draggable(qs, titlebar = false){
+    ele = document.querySelector(qs);
+    ele.parentElement.classList.add("draggable");
+    ele.classList.add("drag");
+    return dragElements(qs);
   }
   window.addEventListener('load', dragElements(".draggable"));

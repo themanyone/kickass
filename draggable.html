@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="generator" content=
-  "HTML Tidy for HTML5 for Linux version 5.7.28">
-  <title>Draggable Windows</title>
+  <title>Draggable Elements</title>
 <!--
 // Copyright (C) 2020 by Henry Kroll, thenerdshow.com
 /* Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,15 +13,17 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License. */ //-->
-  <script src="https://thenerdshow.com/js/prefixfree.min.js"></script>
-  <script src="https://thenerdshow.com/js/prefixfree.dynamic-dom.min.js"></script>
+  <script name="prefixFree" src="https://thenerdshow.com/js/prefixfree.min.js"></script>
+  <script name="prefixFree" src="https://thenerdshow.com/js/prefixfree.dynamic-dom.min.js"></script>
 
   <link rel="stylesheet" href="https://thenerdshow.com/css/github.css">
   <script src="https://thenerdshow.com/js/highlight.pack.js"></script>
   <script>
   hljs.initHighlightingOnLoad();
   </script>
-  <style>
+  <script src="kickass.js"></script>
+  
+  <style id="dragStyle">
   /* a container class to handle drag events */
   .draggable {
      position: absolute;
@@ -42,7 +42,7 @@ limitations under the License. */ //-->
       cursor: move;
   }
   </style>
-  <style>
+  <style id="widgetStyle">
   .widget {
      background-color: #f1f1f1;
      text-align: center;
@@ -69,33 +69,19 @@ limitations under the License. */ //-->
 <body>
   <h1>Kickass JS</h1>
   
-  <p>A javascript widget library collection released under the Apache public license. Use only what is necessary for fast page loads, simplicity, and convenience. Download updated modules from <a href=
-"https://github.com/themanyone/kickass">GitHub</a>. </p>
+  <p>A javascript widget library collection released under the Apache public license. Use only what is necessary for fast page loads, simplicity, and convenience. Download updated modules from <a href= "https://github.com/themanyone/kickass">GitHub</a>. </p>
 
-  <h2>Draggable Windows</h2>
+  <h2><script>_echo("title");</script></h2>
   
-  <p>This tutorial walks through creating a page
-  with dragable windows and other mobile elements.</p>
+  <p>This tutorial walks through creating some basic elements or widgets and making them draggable.</p>
   
-  <p>Although there are other drag and move scripts out there, this
-  one is easy to use, modular, and compact. It
-  works with mice, touch screens, and tablets. It supports multiple
-  elements or div windows on a page. Elements may be configured
-  via CSS to be enabled for moving/dragging around either
-  via a title bar, or by clicking on the body of the element.
-  That's important because some objects contain interactive
-  elements that dragging might interfere with. We also added events
-  to the elements so we can trigger things, such as drop shadows
-  appearing under them while they move.</p>
+  <p>Although there are other drag and move scripts out there, this one is easy to use, modular, and compact. It works with mice, touch screens, and tablets. It supports multiple widgets or elements on a page. Elements may be configured via CSS to be enabled for moving/dragging either via a title bar, or by clicking on the body of the element. That's important because some widgets contain interactive elements that dragging might interfere with. We also added events so scripts can do stuff when they move.</p>
   
   <h2>CSS Classes</h2>
   
-  <p>First let's define some CSS classes to identify which elements
-  can move. We define three classes, a <b>draggable</b> class, a
-  <b>titlebar</b> class, and a separate <b>drag</b>
-  class. For clarity, we do not include browser-specific CSS prefixes.
-  Go ahead and add the ones you need, or use
-  <a href="http://leaverou.github.io/prefixfree/">-prefix-free</a> with <a href="http://leaverou.github.io/prefixfree/#plugins">dynamic DOM</a> plugin to make our scripts work across all current browsers.</p>
+  <p>First let's define some CSS classes to identify which elements can move. Add this to a page to override the default draggable stylesheet that will be automatically added when using kickass scripts. We define three classes, a parent <b>draggable</b> class, a <b>titlebar</b> class, and a separate <b>drag</b> class.</p>
+  
+  <p>*<b>Note</b> that CSS no longer needs to include <a href="https://developer.mozilla.org/en-US/docs/Glossary/Vendor_Prefix">vendor-specific CSS prefixes</a>, such as -moz- and -ms-, becasue kickass scripts automatically pull in <a href="http://leaverou.github.io/prefixfree/">-prefix-free</a> with <a href="http://leaverou.github.io/prefixfree/#plugins">dynamic DOM</a> plugin to take care of that. Enjoy!</p>
   
   <div class="draggable">
      
@@ -217,19 +203,12 @@ limitations under the License. */ //-->
   CSS styles.</noscript>
   
   <h2 style="clear:both">Draggable Elements</h2>
-  <p>
-  Create an element such as a <b>div</b> and assign a
-  <b>class="draggable"</b> to it. This serves as
-  a container to receive drag and move events. Place all draggable   
-elements inside it. They do not have to stay inside it (They can use   
-absolute positioning). Here, we define two dragable elements. One of   
-them is draggable because it has a <b>titlebar</b>. The others have no 
-titlebar; so the only way to make them draggable is to add a <b>drag</b> 
-class.</p>   
+    
+    <p>Create a parent element such as a <b>div</b> to hold all draggable widgets and assign a <b>class="draggable"</b> to it. This serves as a container to receive drag and move events. We could assign <b>class="draggable"</b> to the document's <b>body</b> element. And in fact that's what the <b>widgetize()</b> function does. But there may be side effects if you want to use drag and drop elsewhere on the page. Widgets do not have to stay inside the draggable (They can use absolute positioning). Here, we define two dragable elements. One of them is draggable because it has a <b>titlebar</b>. The others have no titlebar; so the only way to make them draggable is to add a <b>drag</b> class.</p> 
 
   <script>
    var t = htmlEntities(document.querySelector("div.draggable").outerHTML);
-   document.write("<pre><code class=html>  ",
+   document.write("<pre><code class=html> ",
    t, "\n</code></pre>");
   </script>
   <h2 style="clear:both">JavaScript</h2>
@@ -248,10 +227,7 @@ class.</p>
   <h2>Custom events.</h2>
   
   <p>The above script adds three custom events,
-  <b>startmove</b>, <b>moving</b>, and <b>stopmove</b>. Let's add
-  listeners to these events so that when we move them they look
-  orange. We could do other things such as get their positions
-  when they are set down for something like a chess game.</p>
+  <b>startmove</b>, <b>moving</b>, and <b>stopmove</b>. Let's add listeners to these events so that when we move them they look orange. We could do other things such as get their positions when they are set down for something like a chess game.</p>
   
   <script id="shadows">
    var divs = document.querySelectorAll(".widget");
@@ -272,11 +248,6 @@ class.</p>
   </script>
   <h2 style="clear:both">Wrapping Up</h2>
   <p>
-  Well, that's it. We defined CSS classes for dragable objects, one
-  that moves with a titlebar, and one that doesn't. We created
-  a page to display them. We defined elements that can move with the
-  mouse or with tablet and phone gestures. Then we added events to
-  the dragable elements to color them as they move.
-  If this tutorial was helpful, please subcribe for more updates.</p>
+  Well, that's it. We defined CSS classes for dragable objects, one that moves with a titlebar, and one that doesn't. We created a page to display them. We defined elements that can move with the mouse or with tablet and phone gestures. Then we added events to the dragable elements to color them as they move. If this tutorial was helpful, please subcribe for more updates.</p>
 </body>
 </html>

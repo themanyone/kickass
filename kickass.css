@@ -1,0 +1,11 @@
+  pre {
+    display: inline-block;
+  }
+  code {
+    margin: auto;
+    border: 1px solid black;
+  }
+  html body {
+    background: #ca8;
+    height: 100%;
+  }

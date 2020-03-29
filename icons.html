@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html><head><title>Google Icons</title>
+<html><head><title>Widget Icons</title>
 <!--
 // Copyright (C) 2020 by Henry Kroll, thenerdshow.com
 /* Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,19 +23,8 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
   hljs.initHighlightingOnLoad();
   </script>
   
-  <script>
-  //todo: move these convenience functions to kickass.js
-  function htmlEntities(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-  }
-  function echo(qs){
-    document.write(document.querySelector(qs).innerHTML);
-  }
-  function echoCode(qs, type){
-    var t = htmlEntities(document.querySelector(qs).outerHTML);
-    document.write("<pre><code class="+type+">  ", t, "\n</code></pre>");
-  }
-  </script>
+  <script src="kickass.js"></script>
+  
   <style id="widgetStyles">
   .widget {
     position: relative;
@@ -156,27 +145,26 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
     }
   </script>
 </head>
+
+
+
 <body>
-
-
   <h1>Kickass JS</h1>
   
   <p>A javascript widget library collection released under the Apache public license. Use only what is necessary for fast page loads, simplicity, and convenience. Download updated modules from <a href=
 "https://github.com/themanyone/kickass">GitHub</a>. </p>
   
-  <h2><script>echo("title");</script> 
+  <h2><script>_echo("title");</script> 
   <i class="material-icons">minimize</i>
   <i class="material-icons">restore</i>
   <i class="material-icons">close</i>
   <i class="material-icons">computer</i>
   <i class="material-icons">traffic</i></h2>
 
-<p>This tutorial walks through the steps of adding <a href= "https://www.w3schools.com/icons/icons_reference.asp">Google Icons</a> to <i>widgets</i> and other elements. A widget is like a minature application or form that users interact with. We can use icons to make widgets look and behave like windows. First, we will create a generic function to add an icon. Then we will make another function to add <i>titlebar icons</i> (minimize, maximize, and close buttons) to a widget.</p>
-
-<p>Here's a test widget with a form, before and after adding titlebar icons.</p>
+<p>This tutorial walks through the steps of creating widgets and adding icons to them.</p>
 
   <div id="" class="widget" style="width: 300px">
-    <h1 id="output">Test Widget</h1>
+    <h1 id="output">A Plain Widget</h1>
 
     <label>Name:</label><input id="name" type="text"></input>
     <button onclick="doClick(this.parentElement)">Enter</button>
@@ -190,11 +178,28 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
         output.innerHTML = "Hi " + name.value;
       }
     </script>
-    <h1 id="output">Test Widget</h1>
+    <h1 id="output">Widget With Icons</h1>
 
     <label>Name:</label><input id="name" type="text"></input>
     <button onclick="doClick(this.parentElement)">Enter</button>
   </div>
+
+<p>You can skip the tutorial and go right to using the icons library to add titlebar icons to a widget.</p>
+
+<p>First, include <b>icons.js</b> on the page</p>
+
+
+<pre><code>&lt;script type="module" src="kickass/icons.js"&gt;&lt;/script&gt;</code></pre>
+
+<p>Then, at the bottom of the page, or in a load event handler, put some Javascript to attach titlebar icons to a widget named "my_widget_id" with a happy face in the top-left corner.</p>
+
+<pre><code>&lt;script&gt;titleIcons("sentiment_very_satisfied", "#my_widget_id");&lt;/script&gt;</code></pre>
+
+<hr>
+
+<h2>Tutorial</h2>
+
+<p>Widgets are minature applications or forms that users interact with. We can use <a href= "https://www.w3schools.com/icons/icons_reference.asp">Google Icons</a> to make widgets look and behave like little windows. First, we will create a generic function to add an icon. Then we will make another function that uses it to add <i>titlebar icons</i> (minimize, maximize, and close buttons) to a widget.</p>
   
 <p>Here's an example charting widget with titlebar icons.</p>
 
@@ -228,23 +233,23 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
   
   <h2>The Code</h2>
 
-<p>To create the above widgets, we need some basic styles. Put these inside the <b>&lt;head&gt;</b> section of the web page.</p>
+<p>To set our widgets apart from the pasge, we need some basic styles. Put these styles inside the <b>&lt;head&gt;</b> section of the web page to override default widget styles loaded by our scripts. Relative positioning is necessary so the icons can use absolute positioning within the element. We can change widgets to absolute positioning later to move them around. Display: inline-block allows us to place widgets side by side. And of course some padding separates them from the rest of the page content.</p>
 
   <!-- Code Block -->
   <script>echoCode("#widgetStyles", "css");</script>
 
   
-<p>The test widget is just a plain <b>&lt;div&gt;</b> element with text input and a handler function. Add this to the <b>&lt;body&gt;</b> section of the web page.</p>
+<p>The test widget is just a plain <b>&lt;div&gt;</b> element with text input and a handler function. Add this HTML code to the <b>&lt;body&gt;</b> section of the web page.</p>
 
   <!-- Code Block -->
   <script>echoCode("#test", "html");</script>
   
-<p>Now let's create an <b>addIcon</b>() Javascript function to add an icon to any widget. First we have to initialize Google icons. That is done with the <b>useIcons</b>() function. It makes sure to only add the <a href= "https://www.w3schools.com/icons/icons_reference.asp">Google Icons</a> code to the page once.</p>
+<p>Now let's create an <b>addIcon</b>() Javascript function to attach an icon to any widget. First, we write a function to initialize Google icons, but <b>addIcon</b>() will take care of calling it automatically.</p>
 
   <!-- Code Block -->
   <script>echoCode("#addIcon", "html");</script>
   
-<p>The <b>addIcon</b>() function first calls <b>useIcons</b>() to initialize the icons. Then it creates an icon element with the name we give it. It uses style informaiton to place the icon wherever we want it in the widget. Using this code, we can write another function to add all three titlebar icons.</p>
+<p>The <b>addIcon</b>() function first calls <b>useIcons</b>() to initialize the icons. Then it creates an icon element with the name we give it. It uses style informaiton to place the icon wherever we want it within the widget. Using this code, we can write another function to add all three titlebar icons.</p>
 
   <script id="addTitleIcons">
     titleIcons("person_outline", "#test");
@@ -254,15 +259,15 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
   <!-- Code Block -->
   <script>echoCode("#titleIcons", "html");</script>
   
-<p>The <b>titleIcons</b>() script takes an icon name for the top-left corner as its first argument. The second argument is the CSS selector of the element to add the titlebar icons to. It calls <b>addIcon</b>() three times to add the three icons, maximize, minimize, and close. It takes care to insert the necessary styles first. All <b>addIcon</b>() requires is the icon name, some style info saying where to put the icon, in this case in the top-right of the widget, the widget to add icons to, and an event handler or callback function. The event handler changes Styles to maximize or minimize the window depending on which icon is clicked.</p>
+<p>The <b>titleIcons</b>() script takes an icon name for the top-left corner as its first argument. The second argument is the <a href="https://www.w3schools.com/cssref/css_selectors.asp">CSS selector</a> of the element to add the titlebar icons to. It calls <b>addIcon</b>() three times to add the three icons, maximize, minimize, and close. It takes care to insert the necessary styles first. All <b>addIcon</b>() requires is the icon name, some style info saying where to put the icon, in this case in the top-right of the widget, the widget to add icons to, and an event handler or callback function. The event handler changes Styles to maximize or minimize the window depending on which icon is clicked.</p>
 
 <h2>Wrapping Up</h2>
   
-<p>That's it. We created some widget windows on a web page. We wrote a script to put an icon on them. Then we made another script to add the titlebar icons. We can now transfer the scripts from this page into a separate javascript file, named "titleIcons." That way, we don't need to cut and paste all these scripts into every page where they are required. We can simply include them like this.</p>
+<p>That's it. We created some widget windows on a web page. We wrote a script to put an icon on them. Then we made another script to add the titlebar icons. We transferred the scripts from this page into a separate javascript file, named "titleIcons." That way, we don't have to cut and paste all these scripts into every page where they are required. We can simply include them like this.</p>
 
 <pre><code>&lt;script type="module" src="kickass/icons.js"&gt;&lt;/script&gt;</code></pre>
 
-<p>Then call the <b>titleIcons</b>() function. All that is required is give it the <a href="https://www.w3schools.com/cssref/css_selectors.asp">css selectors</a> of the widgets we want to add title icons to. In this case, the ids are #test and #chart.</p>
+<p>Then call the <b>titleIcons</b>() function. All that is required is give it the name of the <a href= "https://www.w3schools.com/icons/icons_reference.asp">Google Icon</a> and the <a href="https://www.w3schools.com/cssref/css_selectors.asp">CSS selector</a> of the widget we want to add title icons to. In this case, the ids are #test and #chart.</p>
   
   <script>echoCode("#addTitleIcons", "html");</script>
 
