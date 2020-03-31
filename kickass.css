@@ -1,17 +1,10 @@
 pre {
   display: inline-block;
-}
-code {
-  margin: auto;
   border: 1px solid black;
 }
-html body {
-  background: #ca8;
-  height: 100%;
-}
-h1, h2, h3 {
+h1, h2, h3, p {
   margin-top: 10px;
-  margin-bottom: 0;
-  color: #420
+  margin-bottom: 5px;
+  color: #024
 }
-i {color: #321;}
+i {color: #024;}

@@ -1,16 +1,18 @@
 # [Kickass](https://github.com/themanyone/kickass)
 
-A light-weight, windowing system for browser apps or "widgets," Kickass consists of small, modular components. The goal for each component is to "do one thing and do it well."
+A compact, modular widget library for web and mobile development.
+
+![widgets](https://thenerdshow.com/kickass/widget.png "Make Widgets")
 
 ## One Module
 
-Kickass will use sub-modules to grab only what is needed asynchronously, for fast page loads and reduced code overlap, instead of a bulky framework.
+When completed, just include one simple module loader on the page. No additional CSS or anything will be required. But this project is fairly new and far from complete.
 
-## Windows-like Components
+## Widget Features
 
-These components allow ad banners, forms, web apps, or other widgets to behave like miniature desktop windows inside an app or web page. They give users and developers improved control over content, so they can reposition forms when using odd-sized on-screen keyboards, for example.
+Widgets give users and developers improved control over content, so they can reposition forms when using odd-sized on-screen keyboards, for example.
 
- * Kickass   - a shared library of common functions
+ * Kickass   - main module pulls in others as needed
  * Widget    - turn a div into a fancy widget
  * Draggable - make elements draggable
  * Icons     - add close button + titlebar icons

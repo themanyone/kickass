@@ -1,10 +1,6 @@
 // Kickass Copyright (C) 2014-2020 by Henry Kroll, www.thenerdshow.com
-_doc = document, _body = _doc.body, _get = e=> _doc.getElementById(e);
-_qs  = e=> _doc.querySelector(e); _qsa = e=> _doc.querySelectorAll(e);
-_echo = qs=>_doc.write(_qs(qs).innerHTML);
-
-Object.prototype._qs = function(q){return this.querySelector(q);};
-Object.prototype._qsa = function(q){return this.querySelectorAll(q);};
+var _doc  = document, _body = _doc.body, _get = e=> _doc.getElementById(e),
+    _qs = qs=>_doc.querySelector(qs), _qsa = qs=>_doc.querySelectorAll(qs)
 
 var _dce = function(tagName, id=null, classNames=null){
   var ret =_doc.createElement(tagName);
@@ -12,19 +8,10 @@ var _dce = function(tagName, id=null, classNames=null){
   return ret;
 };
 
-var htmlEntities = function(str) {
-  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-};
-
-var echoCode = function(qs, type){
-  var t = htmlEntities(_qs(qs).outerHTML);
-  _doc.write("<pre><code class="+type+">  ", t, "\n</code></pre>");
-};
-
 var forAll = function(obj, cb) {
   return (typeof cb === "function")
   ? obj.forAll(cb) : typeof obj === "object"
-    ? function(e) { obj.forAll(e); } : undefined;
+    ? e=>obj.forAll(e) : undefined;
 };
 
 Object.prototype.forAll = function(cb) {
@@ -34,8 +21,48 @@ Object.prototype.forAll = function(cb) {
 };
 
 Array.prototype.uniq = function(){
-	obj = {};out = [];
-    this.forAll(e=> obj[e] = 0);
+	var obj = {}, out = [];
+  this.forAll(e=> obj[e] = 0);
 	return Object.keys(obj);
 };
 
+var includeHTML = async function(ele, url) {
+  const utf8Decoder = new TextDecoder('utf-8');
+  const res = await fetch(url), reader = res.body.getReader();
+  var { value: chunk, done: readerDone } = await reader.read();
+  ele.innerHTML = chunk ? utf8Decoder.decode(chunk) : '';
+};
+
+//load kickass.css
+var link = document.createElement("link");
+link.id = "kickass", link.rel="stylesheet", link.href = "kickass.css";
+_qs("head").appendChild(link);
+
+var htmlEntities = str => String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+//load code highlighting?
+if (_qs("[data-code]")){
+  //load highlight.css
+  var link = document.createElement("link");
+  link.rel="stylesheet", 
+  link.href = "//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/default.min.css";
+  document.head.appendChild(link);
+  //load highlight.js
+  var script = document.createElement("script");
+  script.src = '//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js';
+  script.onload = e=>hljs.initHighlightingOnLoad();
+  document.head.appendChild(script);
+}
+
+//process replacement commands
+_qsa("[data-echo]").forAll(ele=>ele.innerHTML = _qs(ele.dataset.echo).innerHTML);
+_qsa("[data-code]").forAll(ele=>{
+  ele.innerHTML = _qs(ele.dataset.code)?
+  "<code>" + htmlEntities(_qs(ele.dataset.code).outerHTML)+ "</code>"
+  :ele.dataset.code + " CSS selector not found";
+});
+
+_qsa("[data-href]").forAll(ele=>includeHTML(ele, ele.dataset.href));
+
+if (_qs(".draggable")) import('./draggable.js');

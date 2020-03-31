@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head>
-<title>Widgeteize</title>
+<title>Widgetize</title>
 <!--// Copyright (C) 2020 by Henry Kroll, thenerdshow.com
  /* Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -11,17 +11,8 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License. */ -->
-
-<script src="icons.js"></script>
-<script src="draggable.js"></script>
-
-  <link rel="stylesheet" href="https://thenerdshow.com/css/github.css">
-  <script src="https://thenerdshow.com/js/highlight.pack.js"></script>
-  <script>
-  hljs.initHighlightingOnLoad();
-  </script>
   
-<script type="module" src="kickass.mjs"></script>
+<script type="module" src="kickass.js"></script>
 
 </head>
 <body>
@@ -29,13 +20,13 @@
   
   <h2 data-echo="title"></h2>
 
-    <div id="ordinary_div" style="display:inline-block; border: 1px solid black">
-    <h1>This is a DIV</h1>
-    </div>
+<div id="my_widget_id">
+  <h1>This is a Widget</h1>
+</div>
+    
+<p>The following HTML code is all we need to define the above widget.</p>
 
-    <div id="my_widget_id">
-    <h1>This is a Widget</h1>
-    </div>
+<pre data-code="#my_widget_id"></pre>
   
 <script id="widgetize" type="module">
   function widgetize(iname, id){
@@ -60,12 +51,13 @@
     var ele = document.querySelector(id);
     ele.classList.add("widget");
     titleIcons(iname, id);
-    return draggable(id);
+    import ('./draggable.js')
+      .then(obj=>obj.draggable(id));
   }
   widgetize("sentiment_very_satisfied", "#my_widget_id");
   </script>
   
-  <p>Code</p>
+  <p>This javascript code turns the plain div into a draggable widget with icons and styles.</p>
   
   <pre data-code="script#widgetize"></pre>
 </body></html>
