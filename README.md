@@ -1,28 +1,46 @@
 # [Kickass](https://github.com/themanyone/kickass)
 
-A compact, modular widget library for web and mobile development.
+A modular js library without the bulk. Kickass dynamically loads only what is required, and when it is used.
+
+## Installation
+
+One line does it all. Put this anywhere on the page.
+
+    <script type="module" src="kickass/kickass.js"></script>
+
+## Three Classes
+
+ * Widget   - turn a div into a fancy widget
+ * Drag     - make widget draggable
+ * Icons    - add titlebar icons
+
+## Widgets
+
+We define a widget as a web form, video, or other page element that is dressed up to look like a mini window. Our widget has a border and an optional drop shadow. To crate a widget with icons, add the **widget** and **icons** classes. To make it draggable, add the **drag** class.
+
+    <div class="widget icons">
+        <h1>This is a Widget</h1>
+    </div>
 
 ![widgets](https://thenerdshow.com/kickass/widget.png "Make Widgets")
 
-## One Module
-
-When completed, just include one simple module loader on the page. No additional CSS or anything will be required. But this project is fairly new and far from complete.
-
-## Widget Features
-
-Widgets give users and developers improved control over content, so they can reposition forms when using odd-sized on-screen keyboards, for example.
-
- * Kickass   - main module pulls in others as needed
- * Widget    - turn a div into a fancy widget
- * Draggable - make elements draggable
- * Icons     - add close button + titlebar icons
-
-Each component comes with an HTML tutorial walking through each step of creation, deployment and customization. Some components emit custom events, allowing scripts to perform actions based on user interaction, such as dragging or moving the form.
-
 ## Conveniences
 
-kickass makes several conveniences available for tutorial makers. Repeat contents of tags, include HTML from other pages, and display parts of the page as syntax-highlighted code.
+kickass makes several conveniences available for web designers. Repeat contents of tags, include HTML from other pages, and display parts of the page as syntax-highlighted code.
 
- * data-echo feature echos code from other elements.
- * data-include attribute includes data from another page.
- * data-code inserts named script or CSS contents
+ * data-echo    - echo code from another element
+ * data-href    - fetch data from another page
+ * data-code    - insert code from another element
+
+**Examples.**
+
+    <!-- echo the page title as a headline -->
+    <h1 data-echo="title"></h1>
+
+    <!-- include a navbar -->
+    <nav data-href="navbar.html"></nav>
+
+    <!-- show the code in the first div -->
+    <pre data-code="div"></pre>
+
+This is just a start. Feel free to expand on this design pattern to do almost anything.

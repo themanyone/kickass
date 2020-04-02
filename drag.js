@@ -4,13 +4,13 @@
 //References: 
 //www.kirupa.com/html5/drag.htm
 //www.kirupa.com/html5/examples/drag_multiple.htm
-function dragElements(qs){
-  var ele = document.querySelector(qs);
+import {qs, dce} from './inc.js';
+function dragElements(s){
+  var ele = qs(s);
   if (typeof ele === "undefined"||!ele) return;
-  var head = document.querySelector("head");
   //load dragStyle if page doesn't already have it
-  if (!document.querySelector("#dragStyles")) {
-    var style = document.createElement("style");
+  if (!qs("#dragStyles")) {
+    var style = dce("style");
     style.id = "dragStyles";
     style.innerHTML = `
 /* a titlebar class to move a parent around with it */
@@ -26,11 +26,11 @@ function dragElements(qs){
 .drag {
   cursor: move;
 }`;
-    head.appendChild(style);
+    qs("head").appendChild(style);
   }
   //load prefixfree if page doesn't already have it
-  import ('https://thenerdshow.com/js/prefixfree.min.js');
-  import ('https://thenerdshow.com/js/prefixfree.dynamic-dom.min.js');
+  import ('//thenerdshow.com/js/prefixfree.min.js');
+  import ('//thenerdshow.com/js/prefixfree.dynamic-dom.min.js');
   var activeItem = null, ca = ele.addEventListener;
   
   ca("touchstart", dragStart, false);
@@ -109,13 +109,13 @@ function dragElements(qs){
   return ele;
 }
 //Make an element draggable.
-function draggable(qs, titlebar = false){
-  var ele = document.querySelector(qs);
+function draggable(s){
+  var ele = qs(s);
   ele.parentElement.classList.add("draggable");
   ele.classList.add("drag");
-  return dragElements(qs);
+  return dragElements(s);
 }
 
-dragElements(".draggable");
+draggable(".drag");
 
 export { draggable, dragElements }
