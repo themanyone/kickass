@@ -1,6 +1,6 @@
 # [Kickass](https://github.com/themanyone/kickass)
 
-A modular js library without the bulk. Kickass dynamically loads only what is required, and when it is used.
+A modular js library that loads only what is required, and when it is used.
 
 One line does it all.
 
